@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <script>
+        process.mainModule.exports.installmmc(); // makes the mmc object available as window.mmc
+    </script>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+    <h3>Hello, Monday Hackers!</h3>
+
+    <div id="fileList"></div>
+
+    <script>
+
+        // A simple example of using the mmc object
+        console.log("mmc object", window.mmc);
+
+        mmc.test();
+
+        mmc.mediaFinder.find(".", function(data){
+            document.getElementById("fileList").innerHTML += "<div>File: <b>" + data.path + "</b> = " + data.type + "</div>";
+        });
+
+    </script>
+</body>
+</html>
