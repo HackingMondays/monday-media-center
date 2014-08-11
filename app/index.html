@@ -23,12 +23,6 @@
         // A simple example of using the mmc object
         console.log("mmc object", window.mmc);
 
-        mmc.test();
-
-        mmc.mediaFinder.find(".", function(data){
-            document.getElementById("fileList").innerHTML += "<div>File: <b>" + data.path + "</b> = " + data.type + "</div>";
-        });
-
     </script>
 </body>
 </html>

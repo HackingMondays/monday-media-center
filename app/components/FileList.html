@@ -1,0 +1,25 @@
+<polymer-element name="file-list">
+    <template>
+        <h1>Hello World</h1>
+        <ul>
+            <template repeat="{{file in files}}">
+                <li>{{file.path}} - {{file.type}}</li>
+            </template>
+        </ul>
+    </template>
+    <script>
+        Polymer({
+            created: function(){
+                this.files = [];
+                var self = this;
+                mmc.mediaFinder.find(".", function(data){
+                    self.files.push({
+                        path: data.path,
+                        type: data.type,
+                        selected : false
+                    });
+                });
+            }
+        })
+    </script>
+</polymer-element>
