@@ -6,7 +6,8 @@ describe "when i launch this stupid test i get logs", () ->
   it "must launch the process", (done)->
     launcherService.launch("./tests/backend/launcherTest.sh")
 
-    launcherService.processInfo.stdout.on 'data', ()->
+    launcherService.processInfo.stdout.on 'data', (data)->
+      data.should.equal "Toto\n"
       done()
 
   it "must stop the process", (done) ->
@@ -15,3 +16,14 @@ describe "when i launch this stupid test i get logs", () ->
       done()
     launcherService.killCurrentProcess()
 
+  it "when i register a launcher i'm able to launch the returned command", (done)->
+    launcherService.register (path, mime) ->
+      'sleep 1; echo "Toto";'
+
+    launcherService.launchFor
+      path: "./tests/backend/launcherTest.sh"
+      type:"TOTO/TOTO"
+
+    launcherService.processInfo.stdout.on 'data', (data)->
+      data.should.equal "Toto\n"
+      done()

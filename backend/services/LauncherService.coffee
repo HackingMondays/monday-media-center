@@ -4,6 +4,7 @@ child_process = require 'child_process'
 class LauncherService
   constructor: ()->
     @processInfo = null
+    @launchers = []
 
   launch: (cmd)->
     throw "Another process already running" if @processInfo isnt null
@@ -23,6 +24,12 @@ class LauncherService
   killCurrentProcess: ()->
     @processInfo?.kill('SIGKILL')
 
+  register: (launcher) ->
+    @launchers.push launcher
 
+  launchFor: (file) ->
+    @launchers.some (launcher) =>
+      cmd = launcher(file.path, file.type)
+      this.launch(cmd) if cmd isnt null
 
 module.exports = new LauncherService()
