@@ -10,16 +10,15 @@ class LauncherService
 
     @processInfo = child_process.exec cmd
 
-    @processInfo.stdout.on 'data', (chunk) ->
+    @processInfo.stdout.on 'data', (chunk) =>
       console.warn "RECEIVED : #{chunk}"
 
-    @processInfo.stderr.on 'data', (chunk) ->
+    @processInfo.stderr.on 'data', (chunk) =>
       console.error "ERROR : #{chunk}"
 
-    self = this
-    @processInfo.on 'close', (exitCode, signal)->
+    @processInfo.on 'close', (exitCode, signal) =>
       console.log "CLOSE : #{exitCode} :: #{signal}"
-      self.processInfo = null
+      @processInfo = null
 
   killCurrentProcess: ()->
     @processInfo?.kill('SIGKILL')
