@@ -9,15 +9,23 @@
     </template>
     <script>
         Polymer({
-            created: function(){
+            files: [],
+            created: function () {
                 this.files = [];
                 var self = this;
-                mmc.mediaFinder.find(".", function(data){
-                    self.files.push({
-                        path: data.path,
-                        type: data.type,
-                        selected : false
-                    });
+                mmc.mediaFinder.find(".", function (files) {
+                    if (files) {
+                        files.forEach(function (file) {
+                            self.addFile(file)
+                        });
+                    }
+                });
+            },
+            addFile: function (file) {
+                this.files.push({
+                    path: file.path,
+                    type: file.type,
+                    selected: false
                 });
             }
         })

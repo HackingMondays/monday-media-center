@@ -1,7 +1,7 @@
 path = require 'path'
 child_process = require 'child_process'
 
-class LauncherService
+class Launcher
   constructor: ()->
     @processInfo = null
     @launchers = []
@@ -32,4 +32,4 @@ class LauncherService
       cmd = launcher(file.path, file.type)
       this.launch(cmd) if cmd isnt null
 
-module.exports = new LauncherService()
+module.exports = new Launcher()
