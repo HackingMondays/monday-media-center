@@ -17,4 +17,4 @@ class MediaFinder
 # new XBMCWebListMediaFiles().listMedia("./",console.log)
 
 
-module.exports.MediaFinder = MediaFinder
+module.exports = new MediaFinder()

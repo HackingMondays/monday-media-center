@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "A media center software",
   "main": "app/index.html",
-  "node-main": "backend/services.js",
+  "node-main": "backend/bootstrap.js",
   "scripts": {
     "start": "nodewebkit",
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register --recursive tests/"
