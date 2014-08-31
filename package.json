@@ -8,6 +8,11 @@
     "start": "nodewebkit",
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register --recursive tests/"
   },
+  "window": {
+    "title": "Monday Media Center",
+    "width": 900,
+    "height": 400
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

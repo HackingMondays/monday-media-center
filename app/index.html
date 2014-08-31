@@ -6,16 +6,68 @@
     </script>
     <script src="vendor/platform.js"></script>
     <script src="vendor/polymer.js"></script>
-    <link rel="import" href="components/FileList.html">
+    <link rel="import" href="components/ResourceList.html">
     <meta charset="UTF-8">
-    <title>Mondays Media Center</title>
+    <title>Monday Media Center</title>
+    <style>
+        :focus {
+            border: 3px dashed red;
+        }
+
+        /* This 'metro' style is plain wrong, it's only for testing the navigation. To be removed.
+        */
+        .metro {
+            float: left;
+            margin-right: 3px;
+            margin-bottom: 3px;
+            background: #CCCCDD;
+        }
+        .metro1x1 { width: 12.5%; height: 12.5%; min-width: 120px; min-height: 120px; }
+        .metro2x1 { width: 25%; height: 12.5%; min-width: 240px; min-height: 120px; }
+        .metro1x2 { width: 12.5%; height: 25%; min-width: 120px; min-height: 240px; }
+        .metro2x2 { width: 25%; height: 25%; min-width: 240px; min-height: 240px; }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="js/kbnav.js"></script>
 </head>
 <body>
     <h3>Hello, Monday Hackers!</h3>
 
-    <file-list>TOTO</file-list>
+    <div class="metro metro2x2 ">
+        <resource-list id="resourcelist1"></resource-list>
+    </div>
+    <div class="metro metro2x2 ">
+        <button class="nav" onclick="alert('Click me!');">Click me!</button>
+    </div>
+    <div class="metro metro1x1 ">
+        <button class="nav" onclick="alert('Hallo');">Hallo</button>
+    </div>
+    <div class="metro metro2x1 ">
+        <button class="nav" onclick="alert('Ola');">Ola</button>
+    </div>
+    <div class="metro metro1x1 ">
+        <button class="nav" onclick="alert('Bonjour');">Bonjour</button>
+    </div>
+    <div class="metro metro2x1">
+        <button class="nav" onclick="alert('Hello');">Hello</button>
+    </div>
 
-    <div id="fileList"></div>
+    <script>
+        document.addEventListener('polymer-ready', function() {
+            kbnav.install(".nav");
+            ["resourcelist1"].forEach(function(id) {
+                var el = document.getElementById("resourcelist1");
+                if (el) {
+                    kbnav.register(el, function(){ el.trigger(); }, function(){ el.requestFocus(); });
+                }
+            });
+            kbnav.setFocus(0);
+        });
+        window.addEventListener('resize', function(event){
+            kbnav.updatePositions();
+        });
+    </script>
 
 </body>
 </html>

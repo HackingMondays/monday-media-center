@@ -1,0 +1,148 @@
+<polymer-element name="resource-list" attributes="height fillParent">
+    <template>
+        <style>
+            .list-entry {
+                cursor: pointer;
+            }
+            .list-entry-unselected:hover {
+                background: #DDDDFF;
+            }
+            .list-entry-selected {
+                font-weight: bold;
+                background: rgba(0,0,0,0.1);
+            }
+            div#container {
+                border: 3px solid transparent;
+            }
+            div#container:focus {
+                border: 3px dashed red;
+            }
+            :focus .file-list-selected {
+                font-weight: bold;
+                background: #AAAAFF;
+            }
+        </style>
+        <div style="height: {{height}}px; overflow: scroll;" id="container" tabindex="-1" on-click="{{clicked}}" on-dblclick="{{trigger}}" on-keydown="{{onKeydown}}">
+            <template repeat="{{file in files}}">
+                <div data-index="{{file.index}}" class="list-entry {{ file.selected?'list-entry-selected':'list-entry-unselected' }}">
+                    <span style="float:right; display: none;">({{file.type}})</span>
+                    {{file.path}}
+                    <div style="clear: both"></div>
+                </div>
+            </template>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            files: [],
+            selectedIndex: 0,
+            height: 60,
+            fillParent: true,
+
+            created: function () {
+                this.files = [];
+                var self = this;
+                // @TODO change the call to mediaFinder to some data injection
+                mmc.mediaFinder.find(".", function (files) {
+                    self.files = [];
+                    files.forEach(function(file, index) {
+                        self.files.push({
+                            index: index,
+                            path: file.path,
+                            type: file.type,
+                            selected: index == self.selectedIndex
+                        })
+                    });
+                });
+            },
+            clicked : function(event) {
+                var element = this.$.container.querySelector("div.list-entry:hover");
+                if (element) {
+                    this.moveSelected(element.dataset.index - this.selectedIndex, true);
+                }
+            },
+            /**
+             * Moves the index up or down, from any number of steps.
+             * @param steps the number of steps, positive to move the cursor down, negative to move it up.
+             */
+            moveSelected: function(steps, force) {
+                var sel = this.selectedIndex + steps;
+                sel = sel>=this.files.length?(this.files.length-1):sel;
+                sel = sel<0?0:sel;
+
+                if (sel != this.selectedIndex || force) {
+                    if (this.selectedIndex>=0 && this.selectedIndex<this.files.length) {
+                        this.files[this.selectedIndex].selected = false;
+                    }
+                    this.files[sel].selected = true;
+                    this.selectedIndex = sel;
+
+                    var container = this.$.container;
+
+                    // Here we ensure the newly selected entry is fully visible in the viewport
+                    // if it's not, we change so container.scrollTop.
+                    // The DOM does not provide the viewport in any direct way, so it's all about
+                    // calculating it with what we have (offsetTop and the bounding client rect for the entries)
+                    var element = container.querySelector("div.list-entry:nth-of-type("+(this.selectedIndex+1) +")");
+                    if (element != null) {
+                        // Warn: In webkit, the getBoundingClientRect() returns a rect including the margin/borders
+                        // BUT it's relative to the _real_ offset to the offsetParent node (= <body>), which means it
+                        // changes when div.container scrolls.
+                        // On the other hand, element.offsetTop is the _logical_ offset to the offsetParent
+                        // (always <body>), which means it does not changes when the div.container scrolls.
+                        var bound = element.getBoundingClientRect();
+                        var elementScrollTop = bound.top - container.offsetTop;
+                        var elementHeight = bound.bottom - bound.top;
+
+                        if (bound.top < container.offsetTop || (steps<0 && (bound.bottom > container.offsetTop+this.height))) {
+                            setTimeout(function() {
+                                container.scrollTop = element.offsetTop-container.offsetTop;
+                            }, 0);
+                        } else if (bound.bottom > container.offsetTop+this.height) {
+                            var sctop = element.offsetTop - container.offsetTop - (this.height - elementHeight);
+                            setTimeout(function() {
+                                container.scrollTop = sctop;
+                            }, 0);
+                        }
+                    }
+                }
+
+            },
+            onKeydown: function(event) {
+                switch(event.which) {
+                    case 38: // Up
+                        if (this.selectedIndex>0) {
+                            this.moveSelected(-1);
+                            event.stopPropagation();
+                            event.preventDefault();
+                        }
+                    break;
+                    case 40: // Down
+                        if (this.selectedIndex < this.files.length-1) {
+                            this.moveSelected(1);
+                            event.stopPropagation();
+                            event.preventDefault();
+                        }
+                    break;
+                    case 32:
+                    case 13:
+                        this.trigger();
+                        event.stopPropagation();
+                        event.preventDefault();
+                    break;
+                }
+            },
+            trigger: function() {
+                alert("Triggered " + this.selectedIndex);
+            },
+            requestFocus: function() {
+                this.$.container.focus();
+            },
+            ready: function() {
+                if (this.fillParent) {
+                    this.height = this.parentNode.clientHeight;
+                }
+            }
+        })
+    </script>
+</polymer-element>
