@@ -1,4 +1,4 @@
-<polymer-element name="resource-list" attributes="height fillParent">
+<polymer-element name="resource-list" attributes="height fillParent source">
     <template>
         <style>
             .list-entry {
@@ -26,7 +26,7 @@
             <template repeat="{{file in files}}">
                 <div data-index="{{file.index}}" class="list-entry {{ file.selected?'list-entry-selected':'list-entry-unselected' }}">
                     <span style="float:right; display: none;">({{file.type}})</span>
-                    {{file.path}}
+                    {{file.label}} <content data="{{file.path}}"></content>
                     <div style="clear: both"></div>
                 </div>
             </template>
@@ -42,18 +42,6 @@
             created: function () {
                 this.files = [];
                 var self = this;
-                // @TODO change the call to mediaFinder to some data injection
-                mmc.mediaFinder.find(".", function (files) {
-                    self.files = [];
-                    files.forEach(function(file, index) {
-                        self.files.push({
-                            index: index,
-                            path: file.path,
-                            type: file.type,
-                            selected: index == self.selectedIndex
-                        })
-                    });
-                });
             },
             clicked : function(event) {
                 var element = this.$.container.querySelector("div.list-entry:hover");
@@ -142,6 +130,27 @@
                 if (this.fillParent) {
                     this.height = this.parentNode.clientHeight;
                 }
+
+                var self = this;
+                var res = mmc.resources.manager.find(this.source);
+                res.list(function(err, resources) {
+                    console.log("loaded resources", resources);
+                    self.files = [];
+                    resources.forEach(function(res, index) {
+                        self.files.push({
+                            index: index,
+                            resource: res,
+                            path: res.url,
+                            label: res.label,
+                            type: res.mimeType,
+                            selected: index == self.selectedIndex
+                        })
+                    });
+                });
+
+                console.log("resources", this.source, self.files);
+
+
             }
         })
     </script>
