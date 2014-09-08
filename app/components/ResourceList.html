@@ -143,7 +143,6 @@
                 var self = this;
                 var res = mmc.resources.manager.find(this.source);
                 res.list(function(err, resources) {
-                    console.log("loaded resources", resources);
                     self.selectedIndex = 0;
                     self.setDataModel(resources);
                 });

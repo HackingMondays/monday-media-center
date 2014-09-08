@@ -30,7 +30,7 @@ export class ResourceManager {
         var descriptor = this.resources[name];
         if (descriptor) {
             if (descriptor.type == "fs") {
-                return new FileSystemResource(descriptor.parameter);
+                return new FileSystemResource(descriptor.parameter, descriptor.options);
             }
             return new InvalidResource();
         }
