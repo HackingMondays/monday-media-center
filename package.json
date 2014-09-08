@@ -7,7 +7,7 @@
   "js-flags": "",
   "scripts": {
     "start": "nodewebkit",
-    "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register --recursive tests/"
+    "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register,js:mocha-traceur --recursive tests/"
   },
   "window": {
     "title": "Monday Media Center",
@@ -21,9 +21,12 @@
     "coffee-script": "^1.7.1",
     "js-yaml": "^3.2.2",
     "mime": "^1.2.11",
-    "mocha": "^1.21.4",
     "nodewebkit": "^0.10.3",
-    "should": "^4.0.4",
     "traceur": "0.0.60"
+  },
+  "devDependencies": {
+      "mocha-traceur": "^1.0.0",
+      "mocha": "^1.21.4",
+      "should": "^4.0.4"
   }
 }
