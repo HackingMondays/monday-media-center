@@ -5,6 +5,7 @@
   "main": "app/index.html",
   "node-main": "backend/bootstrap.js",
   "js-flags": "",
+  "repository": "https://github.com/HackingMondays/monday-media-center",
   "scripts": {
     "start": "nodewebkit",
     "test": "./node_modules/.bin/mocha --compilers coffee:coffee-script/register,js:mocha-traceur --recursive tests/"
