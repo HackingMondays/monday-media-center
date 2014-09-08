@@ -2,3 +2,5 @@ resources:
   'test data':
        type: fs
        parameter: ./tests/data
+       options:
+                 chrootBase: ./tests

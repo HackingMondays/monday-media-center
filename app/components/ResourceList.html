@@ -22,7 +22,7 @@
                 background: #AAAAFF;
             }
         </style>
-        <div style="height: {{height}}px; overflow: scroll;" id="container" tabindex="-1" on-click="{{clicked}}" on-dblclick="{{trigger}}" on-keydown="{{onKeydown}}">
+        <div style="height: {{height}}px; overflow-y: scroll; overflow-x: hidden;" id="container" tabindex="-1" on-click="{{clicked}}" on-dblclick="{{trigger}}" on-keydown="{{onKeydown}}">
             <template repeat="{{file in files}}">
                 <div data-index="{{file.index}}" class="list-entry {{ file.selected?'list-entry-selected':'list-entry-unselected' }}">
                     <span style="float:right; display: none;">({{file.type}})</span>
@@ -121,7 +121,16 @@
                 }
             },
             trigger: function() {
-                alert("Triggered " + this.selectedIndex);
+                var res = this.files[this.selectedIndex];
+                if (res) {
+                    var self = this;
+                    res.resource.execute(function(err, result) {
+                        if (Array.isArray(result)) {
+                            self.selectedIndex = 0;
+                            self.setDataModel(result);
+                        }
+                    });
+                }
             },
             requestFocus: function() {
                 this.$.container.focus();
@@ -134,23 +143,25 @@
                 var self = this;
                 var res = mmc.resources.manager.find(this.source);
                 res.list(function(err, resources) {
-                    console.log("loaded resources", resources);
-                    self.files = [];
-                    resources.forEach(function(res, index) {
-                        self.files.push({
-                            index: index,
-                            resource: res,
-                            path: res.url,
-                            label: res.label,
-                            type: res.mimeType,
-                            selected: index == self.selectedIndex
-                        })
-                    });
+                    self.selectedIndex = 0;
+                    self.setDataModel(resources);
                 });
 
                 console.log("resources", this.source, self.files);
-
-
+            },
+            setDataModel: function(resources) {
+                var self = this;
+                this.files = [];
+                resources.forEach(function(res, index) {
+                    self.files.push({
+                        index: index,
+                        resource: res,
+                        path: res.url,
+                        label: res.label,
+                        type: res.mimeType,
+                        selected: index == self.selectedIndex
+                    })
+                });
             }
         })
     </script>
