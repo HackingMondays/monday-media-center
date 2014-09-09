@@ -1,6 +1,6 @@
 var should = require("should");
 var path = require("path");
-import { FileSystemResource } from "../../../backend/services/FileSystemResource.js";
+import { FileSystemResource } from "../../../backend/resources/FileSystemResource.js";
 
 describe("FileSystemResource", () => describe("constructor", () => {
     it("accepts local file path in constructor", () => {
