@@ -14,24 +14,17 @@ function loadJson(path) {
 export class AppConfig {
 
     constructor(name) {
-        this.configFilePath = [
-            path.join(this.home, name),
-            path.join(this.home, name + ".yaml"),
-            path.join(this.home, name + ".js"),
-            path.join(this.home, name + "js"),
-            path.join(this.home, name + "rc"),
-            path.join(this.home, "." + name),
-            path.join(this.home, "." + name + ".yaml"),
-            path.join(this.home, "." + name + ".js"),
-            path.join(this.home, "." + name + "js"),
-            path.join(this.home, "." + name + "rc"),
-            name,
-            name + ".yaml",
-            name + ".js",
-            name + "js",
-            name + "rc",
+        var locations = [];
+        [undefined, this.home].map((prefix) => {
+            [name, "." + name].map( (filename) => {
+                ["", "rc", ".yaml", ".js", "js"].map( (extension) => {
+                    locations.push(prefix?path.join(prefix, filename + extension) : filename + extension);
+                })
+            })
+        });
 
-        ].filter((path) => fs.existsSync(path)).reduce((left,right) => left?left:right, undefined);
+        this.configFilePath = locations.filter((path) => fs.existsSync(path)).reduce((left,right) => left?left:right, undefined);
+        console.log("config paths", this.configFilePath);
 
         if (this.configFilePath) {
             this.data = this.configFilePath.endsWith(".js")?loadJson(this.configFilePath):loadYaml(this.configFilePath);
