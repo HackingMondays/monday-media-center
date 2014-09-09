@@ -14,7 +14,6 @@ function loadJson(path) {
 export class AppConfig {
 
     constructor(name) {
-        console.log("Creating AppConfig", name, path.join(this.home, name));
         this.configFilePath = [
             path.join(this.home, name),
             path.join(this.home, name + ".yaml"),

@@ -1,6 +1,21 @@
 resources:
   'test data':
-       type: fs
-       parameter: ./tests/data
-       options:
+      type: fs
+      parameter: ./tests/data
+      options:
                  chrootBase: ./tests
+                 launcher: mplayer
+                 parentLabel: ..
+
+launchers:
+  'vlc':
+      type: commandline
+      parameter: vlc -f %url%
+
+  gedit:
+      type: commandline
+      parameter: gedit %path%
+
+  'mplayer':
+      type: commandline
+      parameter: mplayer %url%
