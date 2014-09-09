@@ -6,12 +6,17 @@ var URL = require("url");
  */
 export class AbstractResource {
 
-    constructor(url) {
+    constructor(url, options) {
         this.parsedURL = URL.parse(url, true);
+        this.options = options;
     }
 
     get url() {
         return this.parsedURL.href;
+    }
+
+    get path() {
+        return this.parsedURL.path;
     }
 
     get label() {
@@ -36,6 +41,17 @@ export class AbstractResource {
 
     getMetaData(name) {
         // todo
+    }
+
+    runLauncher(callback) {
+        var launcherService = require("../services").launchers;
+        if (this.options.launcher) {
+            var launcher = launcherService.get(this.options.launcher);
+            launcher.run(this, callback);
+        } else {
+            console.err("no launcher");
+            callback(true);
+        }
     }
 
 }

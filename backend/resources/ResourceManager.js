@@ -22,8 +22,9 @@ class InvalidResource extends AbstractResource {
  */
 export class ResourceManager {
 
-    constructor(resources) {
+    constructor(resources, launcherService) {
         this.resources = resources;
+        this.launcherService = launcherService;
     }
 
     find(name) {

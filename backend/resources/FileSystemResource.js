@@ -2,9 +2,9 @@ var fs = require("fs");
 var path = require('path');
 var URL = require('url');
 var async = require("async");
+var extend = require("extend");
 
 import { AbstractResource } from "./AbstractResource.js";
-
 /**
  * The FileSystemResource class provides a resource working specifically with file paths.
  * Note that an error is raised if the provided url is neither a file: or a local path.
@@ -16,14 +16,12 @@ import { AbstractResource } from "./AbstractResource.js";
  */
 export class FileSystemResource extends AbstractResource {
 
-    constructor(url, options) {
-        if (typeof url == "string" && !url.startsWith("file:")) {
-            url = URL.format({ protocol: "file:", pathname: path.resolve(url), slashes: true, host: "" });
-        }
-        super(url);
+    constructor(url, options, label) {
+        super(normalizeAsUrl(url), options || {chroot: true});
+        this.forcedLabel = label;
+
         this.parsedURL.path = cleanPath(this.parsedURL.path);
 
-        this.options = options || {chroot: true};
         if (this.options.chroot || this.options.chrootBase) {
             this.options.chrootBase = cleanPath(this.options.chrootBase || this.parsedURL.path);
         }
@@ -44,16 +42,13 @@ export class FileSystemResource extends AbstractResource {
             (files, callback) => {
                 callback(false, files.map((file) =>  {
                     var url = this.parsedURL.protocol + "//" + path.resolve(this.parsedURL.path, file);
-                    return new FileSystemResource(url, defaultOptions);
+                    return new FileSystemResource(url, extend({}, this.options, {label: null}))
                 }));
             }
         ], (err, result) => {
             if (!err && !this.options.chroot && (this.parsedURL.path != this.options.chrootBase)) {
                 result = [
-                    new FileSystemResource(path.resolve(this.parsedURL.path, ".."), { // @TODO should rather extend option than copy properties
-                        label: "[parent]",
-                        chrootBase: defaultOptions.chrootBase
-                    })
+                    new FileSystemResource(path.resolve(this.parsedURL.path, ".."), extend({}, this.options), this.options.parentLabel||"[parent]")
                 ].concat(result);
             }
             callback(err, result);
@@ -64,8 +59,7 @@ export class FileSystemResource extends AbstractResource {
         this.list((err, files) => {
             if (err) {
                 // try executing a launcher
-                // @TODO: call the launcher here
-                callback(false, {message: "executed"});
+                this.runLauncher(callback);
             } else {
                 callback(false, files);
             }
@@ -73,11 +67,17 @@ export class FileSystemResource extends AbstractResource {
     }
 
     get label() {
-        return this.options.label?this.options.label:path.basename(this.parsedURL.path);
+        return this.forcedLabel?this.forcedLabel:path.basename(this.parsedURL.path);
     }
 
 }
 
+function normalizeAsUrl(url) {
+    if (typeof url == "string" && !url.startsWith("file:")) {
+        url = URL.format({ protocol: "file:", pathname: path.resolve(url), slashes: true, host: "" });
+    }
+    return url;
+}
 
 function cleanPath(filepath) {
     filepath = path.normalize(filepath);
