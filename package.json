@@ -2,7 +2,7 @@
   "name": "monday-media-center",
   "version": "0.0.0",
   "description": "A media center software",
-  "main": "app/index.html",
+  "main": "backend/main.js",
   "node-main": "backend/bootstrap.js",
   "js-flags": "",
   "repository": "https://github.com/HackingMondays/monday-media-center",
