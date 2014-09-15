@@ -3,6 +3,7 @@ var path = require('path');
 var URL = require('url');
 var async = require("async");
 var extend = require("extend");
+var querystring = require('querystring');
 
 import { AbstractResource } from "./AbstractResource.js";
 /**
@@ -24,6 +25,7 @@ export class FileSystemResource extends AbstractResource {
 
         if (this.options.chroot || this.options.chrootBase) {
             this.options.chrootBase = cleanPath(this.options.chrootBase || this.parsedURL.path);
+            delete this.options.chroot;
         }
 
         if (this.parsedURL.protocol != 'file:') {
@@ -67,7 +69,7 @@ export class FileSystemResource extends AbstractResource {
     }
 
     get label() {
-        return this.forcedLabel?this.forcedLabel:path.basename(this.parsedURL.path);
+        return decodeURIComponent(this.forcedLabel?this.forcedLabel:path.basename(this.parsedURL.path));
     }
 
 }

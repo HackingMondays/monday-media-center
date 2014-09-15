@@ -38,6 +38,9 @@
         <resource-list id="resourcelist1" source="test data" fillParent="true"> <file-entry></file-entry> </resource-list>
     </div>
     <div class="metro metro2x2 ">
+        <resource-list id="videos" source="videos" fillParent="true"> <file-entry></file-entry> </resource-list>
+    </div>
+    <div class="metro metro2x2 ">
         <button class="nav" onclick="alert('Click me!');">Click me!</button>
     </div>
     <div class="metro metro1x1 ">
@@ -56,8 +59,8 @@
     <script>
         document.addEventListener('polymer-ready', function() {
             kbnav.install(".nav");
-            ["resourcelist1"].forEach(function(id) {
-                var el = document.getElementById("resourcelist1");
+            ["resourcelist1", "videos"].forEach(function(id) {
+                var el = document.getElementById(id);
                 if (el) {
                     kbnav.register(el, function(){ el.trigger(); }, function(){ el.requestFocus(); });
                 }
