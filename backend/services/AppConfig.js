@@ -15,9 +15,9 @@ export class AppConfig {
 
     constructor(name) {
         var locations = [];
-        [undefined, this.home].map((prefix) => {
+        [this.home, undefined].map((prefix) => {
             [name, "." + name].map( (filename) => {
-                ["", "rc", ".yaml", ".js", "js"].map( (extension) => {
+                ["", "rc", ".yaml", ".json"].map( (extension) => {
                     locations.push(prefix?path.join(prefix, filename + extension) : filename + extension);
                 })
             })
