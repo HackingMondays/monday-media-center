@@ -4,4 +4,6 @@
 node_modules
 .idea
 *.iml
-binaries
+atom-shell-bin
+.cache
+
