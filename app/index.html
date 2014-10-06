@@ -121,7 +121,7 @@
     </div>
 
     <div class="tile-group double" >
-        <a class="tile double triple-vertical bg-steel nav" data-click="transform">
+        <a class="tile double triple-vertical bg-steel" data-click="transform">
             <resource-list id="resourcelist1" source="test data" fillParent="true">
                 <file-entry></file-entry>
             </resource-list>
@@ -213,7 +213,9 @@
         window.addEventListener('resize', function(event){
             kbnav.updatePositions();
         });
-
+        setTimeout(function() {
+            kbnav.updatePositions();
+        }, 2000);
 </script>
 
 </body>
