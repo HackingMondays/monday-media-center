@@ -121,15 +121,19 @@ var kbnav = kbnav || (function(){
         };
 
         this.installKeymap = function(controlList) {
-            var self = this;
-            nativeDom.addEventListener("keydown", function(event) {
-                var command = keyToCommand(event.which);
-                if (command && controlList.indexOf(command)>=0) {
-                    event.stopPropagation();
-                    event.preventDefault();
-                    self.execute(command);
-                }
-            });
+        // TODO: FATAL CHECK (FOUS TA CAGOULE)
+//            var self = this;
+//            nativeDom.addEventListener("keydown", function(event) {
+//                var command = keyToCommand(event.which);
+//
+//                console.log("+",event.which,command);
+//
+//                if (command && controlList.indexOf(command)>=0) {
+//                    event.stopPropagation();
+//                    event.preventDefault();
+//                    self.execute(command);
+//                }
+//            });
         }
 
         this.element = domElement;
@@ -283,6 +287,7 @@ var kbnav = kbnav || (function(){
         if (cur) {
             var nextElement = findClosest(direction, cur);
             if (nextElement !== undefined) {
+                console.log(nextElement);
                 nextElement.focus();
             }
         }
@@ -313,11 +318,13 @@ var kbnav = kbnav || (function(){
 
         window.addEventListener("keydown", function(e){
             var command = keyToCommand(e.which);
+            console.log(e.which,command);
             switch (command) {
                 case "up":
                 case "down":
                 case "left":
                 case "right":
+
                     goToDirection(command);
                     e.stopPropagation();
                     break;

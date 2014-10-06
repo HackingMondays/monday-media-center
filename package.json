@@ -12,8 +12,8 @@
   },
   "window": {
     "title": "Monday Media Center",
-    "width": 900,
-    "height": 400
+    "width": 1280,
+    "height": 720
   },
   "author": "",
   "license": "ISC",
@@ -25,7 +25,8 @@
     "mime": "^1.2.11",
     "nodewebkit": "^0.10.3",
     "shelljs": "^0.3.0",
-    "traceur": "0.0.60"
+    "traceur": "0.0.60",
+    "jquery": "^2.0.0"
   },
   "devDependencies": {
     "mocha-traceur": "^1.0.0",

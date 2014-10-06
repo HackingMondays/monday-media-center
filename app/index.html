@@ -3,7 +3,9 @@
 <head lang="en">
     <script>
         process.mainModule.exports.installmmc(); // makes the mmc object available as window.mmc
+
     </script>
+    <script src="vendor/jquery/js/jquery.min.js"></script>
     <script src="vendor/platform.js"></script>
     <script src="vendor/polymer.js"></script>
     <link rel="import" href="components/ResourceList.html">
@@ -11,52 +13,193 @@
     <title>Monday Media Center</title>
     <style>
         :focus {
-            border: 3px dashed red;
+        border: 3px dashed red;
         }
-
-        /* This 'metro' style is plain wrong, it's only for testing the navigation. To be removed.
-        */
-        .metro {
-            float: left;
-            margin-right: 3px;
-            margin-bottom: 3px;
-            background: #CCCCDD;
-        }
-        .metro1x1 { width: 12.5%; height: 12.5%; min-width: 120px; min-height: 120px; }
-        .metro2x1 { width: 25%; height: 12.5%; min-width: 240px; min-height: 120px; }
-        .metro1x2 { width: 12.5%; height: 25%; min-width: 120px; min-height: 240px; }
-        .metro2x2 { width: 25%; height: 25%; min-width: 240px; min-height: 240px; }
-
     </style>
-    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <link rel="stylesheet" href="vendor/metro/css/metro-bootstrap.css">
+    <link rel="stylesheet" href="vendor/metro/css/iconFont.css">
+
+    <!--<script src="vendor/metro/js/load-metro.js"></script>-->
+
+    <script src="vendor/jquery/js/jquery.mousewheel.js"></script>
     <script src="js/kbnav.js"></script>
 </head>
-<body>
-    <h3>Hello, Monday Hackers!</h3>
+<body class="metro">
 
-    <div class="metro metro2x2 ">
-        <resource-list id="resourcelist1" source="test data" fillParent="true"> <file-entry></file-entry> </resource-list>
-    </div>
-    <div class="metro metro2x2 ">
-        <resource-list id="videos" source="videos" fillParent="true"> <file-entry></file-entry> </resource-list>
-    </div>
-    <div class="metro metro2x2 ">
-        <button class="nav" onclick="alert('Click me!');">Click me!</button>
-    </div>
-    <div class="metro metro1x1 ">
-        <button class="nav" onclick="alert('Hallo');">Hallo</button>
-    </div>
-    <div class="metro metro2x1 ">
-        <button class="nav" onclick="alert('Ola');">Ola</button>
-    </div>
-    <div class="metro metro1x1 ">
-        <button class="nav" onclick="alert('Bonjour');">Bonjour</button>
-    </div>
-    <div class="metro metro2x1">
-        <button class="nav" onclick="alert('Hello');">Hello</button>
+<div class="tile-area tile-area-dark">
+    <h1 class="tile-area-title fg-white">Hello, Monday Hackers!</h1>
+
+
+
+    <div class="tile-group three" >
+
+        <a data-click="transform" data-effect="slideUp" data-role="live-tile" class="tile double bg-lightBlue live nav"  href="#">
+            <div class="tile-content email" style="top: -120px;">
+                <div class="email-image">
+                    <img src="sample/images/obama.jpg">
+                </div>
+                <div class="email-data">
+                    <span class="email-data-title">Barak Obama</span>
+                    <span class="email-data-subtitle">You're invited</span>
+                    <span class="email-data-text">I hope that you can make and make</span>
+                </div>
+            </div>
+            <div class="tile-content email" style="top: 0px; display: block;">
+                <div class="email-image">
+                    <img src="sample/images/jolie.jpg">
+                </div>
+                <div class="email-data">
+                    <span class="email-data-title">Jolie &amp; Bred</span>
+                    <span class="email-data-subtitle">You're invited</span>
+                    <span class="email-data-text">I hope that you can make and make</span>
+                </div>
+            </div>
+            <div class="tile-content email" style="top: -120px; display: block;">
+                <div class="email-image">
+                    <img src="sample/images/shvarcenegger.jpg">
+                </div>
+                <div class="email-data">
+                    <span class="email-data-title">Arny</span>
+                    <span class="email-data-subtitle">You're invited</span>
+                    <span class="email-data-text">I hope that you can make and make</span>
+                </div>
+            </div>
+
+        </a>
+        <a data-click="transform" class="tile bg-grey nav" href="#">
+            <div class="tile-content icon">
+                <span class="icon-steering-wheel"></span>
+            </div>
+        </a>
+
+        <a data-click="transform" class="tile double double-vertical bg-steel nav"  href="#">
+            <div style="background: url(sample/images/clouds2.png)" class="tile-content">
+                <div class="padding10">
+                    <h1 class="fg-white ntm">57°</h1>
+                    <h2 class="fg-white no-margin">San Francisco</h2>
+                    <h5 class="fg-white no-margin">Party Cloudy</h5>
+                    <p class="tertiary-text fg-white no-margin">Today</p>
+                    <p class="tertiary-text fg-white">63°/55° Mostly Clear</p>
+                    <p class="tertiary-text fg-white no-margin">Tomorrow</p>
+                    <p class="tertiary-text fg-white">64°/54° Mostly Clear</p>
+                </div>
+
+            </div>
+            <div class="tile-status">
+                <div class="label">Weather</div>
+            </div>
+        </a>
+
+        <a data-click="transform" class="tile half bg-darkRed nav" href="#">
+            <div class="tile-content icon">
+                <span class="icon-camera"></span>
+            </div>
+        </a>
+        <a data-click="transform" class="tile half bg-green nav" href="#">
+            <div class="tile-content icon">
+                <span class="icon-headphones"></span>
+            </div>
+        </a>
+
+        <a data-click="transform" class="tile bg-red nav" href="#">
+            <div class="tile-content icon">
+                <span class="icon-bug"></span>
+            </div>
+        </a>
+        <a data-click="transform" class="tile half bg-green nav" href="#">
+            <div class="tile-content icon">
+                <span class="icon-cart"></span>
+            </div>
+        </a>
+        <a data-click="transform" class="tile half bg-yellow nav" href="#">
+            <div class="tile-content icon">
+                <span class="icon-thermometer"></span>
+            </div>
+        </a>
+
     </div>
 
-    <script>
+    <div class="tile-group double" >
+        <a class="tile double triple-vertical bg-steel nav" data-click="transform">
+            <resource-list id="resourcelist1" source="test data" fillParent="true">
+                <file-entry></file-entry>
+            </resource-list>
+        </a>
+    </div>
+
+    <div class="tile-group double" >
+        <a data-click="transform" data-effect="slideUpDown" data-role="live-tile" class="tile double live nav" href="#">
+            <div class="tile-content image" style="top: 120px;">
+                <img src="sample/images/1.jpg">
+            </div>
+            <div class="tile-content image" style="top: -120px; display: block;">
+                <img src="sample/images/2.jpg">
+            </div>
+            <div class="tile-content image" style="top: 0px; display: block;">
+                <img src="sample/images/3.jpg">
+            </div>
+            <div class="tile-content image" style="top: -120px; display: block;">
+                <img src="sample/images/4.jpg">
+            </div>
+            <div class="tile-content image" style="top: -120px; display: block;">
+                <img src="sample/images/5.jpg">
+            </div>
+
+            <div class="tile-status">
+                <span class="label">Images</span>
+            </div>
+        </a>
+
+        <a class="tile double bg-violet nav" data-click="transform" href="#">
+            <div class="tile-content">
+                <div class="text-right padding10 ntp">
+                    <h1 class="fg-white no-margin">10</h1>
+
+                    <p class="fg-white">Sunday</p>
+                </div>
+            </div>
+            <div class="brand">
+                <div class="label"><h3 class="no-margin fg-white"><span class="icon-calendar"></span></h3></div>
+            </div>
+        </a>
+        <a data-click="transform" class="tile bg-darkOrange nav" href="#">
+            <div class="tile-content icon">
+                <span class="icon-help"></span>
+            </div>
+            <div class="brand">
+                <div class="label">Help+Tips</div>
+            </div>
+        </a>
+        <a href="#" class="tile half bg-darkPink nav" data-click="transform">
+            <div class="tile-content icon">
+                <span class="icon-pictures"></span>
+            </div>
+        </a>
+        <a href="#" class="tile half bg-black nav" data-click="transform">
+            <div class="tile-content icon">
+                <span class="icon-lightning"></span>
+            </div>
+        </a>
+        <a href="#" class="tile half bg-orange nav" data-click="transform">
+            <div class="tile-content icon">
+                <span class="icon-gift"></span>
+            </div>
+        </a>
+        <a href="#" class="tile half bg-lightBlue nav" data-click="transform">
+            <div class="tile-content icon">
+                <span class="icon-diary"></span>
+            </div>
+        </a>
+    </div>
+
+
+</div>
+
+
+
+
+<script>
         document.addEventListener('polymer-ready', function() {
             kbnav.install(".nav");
             ["resourcelist1", "videos"].forEach(function(id) {
@@ -70,7 +213,8 @@
         window.addEventListener('resize', function(event){
             kbnav.updatePositions();
         });
-    </script>
+
+</script>
 
 </body>
 </html>
