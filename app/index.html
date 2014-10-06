@@ -202,8 +202,8 @@
 <script>
         document.addEventListener('polymer-ready', function() {
             kbnav.install(".nav");
-            ["resourcelist1"].forEach(function(id) {
-                var el = document.getElementById("resourcelist1");
+            ["resourcelist1", "videos"].forEach(function(id) {
+                var el = document.getElementById(id);
                 if (el) {
                     kbnav.register(el, function(){ el.trigger(); }, function(){ el.requestFocus(); });
                 }

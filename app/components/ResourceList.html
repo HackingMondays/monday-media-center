@@ -142,10 +142,13 @@
 
                 var self = this;
                 var res = mmc.resources.manager.find(this.source);
-                res.list(function(err, resources) {
-                    self.selectedIndex = 0;
-                    self.setDataModel(resources);
-                });
+                console.log("trace", this.source, res);
+                if (res && typeof res.list == "function") {
+                    res.list(function (err, resources) {
+                        self.selectedIndex = 0;
+                        self.setDataModel(resources);
+                    });
+                }
             },
             setDataModel: function(resources) {
                 var self = this;
